@@ -6,7 +6,7 @@ final class ClipboardHistory: ObservableObject {
 
     @Published private(set) var items: [ClipboardItem] = []
 
-    private init() {}
+    init() {}
 
     func add(_ text: String) {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)

@@ -18,7 +18,19 @@
 		A10000010000000000000009 /* ClipboardMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000009; };
 		A1000001000000000000000A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2000001000000000000000A; };
 		A1000001000000000000000B /* HotKey in Frameworks */ = {isa = PBXBuildFile; productRef = A5000001000000000000000B; };
+		B10000010000000000000001 /* ClipboardItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000010000000000000001; };
+		B10000010000000000000002 /* ClipboardHistoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000010000000000000002; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B50000010000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A70000010000000000000002 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A70000010000000000000001;
+			remoteInfo = MacClip;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		A20000010000000000000001 /* MacClipApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacClipApp.swift; sourceTree = "<group>"; };
@@ -34,6 +46,9 @@
 		A2000001000000000000000C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2000001000000000000000D /* MacClip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacClip.entitlements; sourceTree = "<group>"; };
 		A30000010000000000000001 /* MacClip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacClip.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B20000010000000000000001 /* ClipboardItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardItemTests.swift; sourceTree = "<group>"; };
+		B20000010000000000000002 /* ClipboardHistoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardHistoryTests.swift; sourceTree = "<group>"; };
+		B30000010000000000000001 /* MacClipTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacClipTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +60,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B40000010000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -52,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				A60000010000000000000002 /* MacClip */,
+				B60000010000000000000001 /* MacClipTests */,
 				A60000010000000000000006 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -103,8 +126,18 @@
 			isa = PBXGroup;
 			children = (
 				A30000010000000000000001 /* MacClip.app */,
+				B30000010000000000000001 /* MacClipTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B60000010000000000000001 /* MacClipTests */ = {
+			isa = PBXGroup;
+			children = (
+				B20000010000000000000001 /* ClipboardItemTests.swift */,
+				B20000010000000000000002 /* ClipboardHistoryTests.swift */,
+			);
+			path = MacClipTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -130,6 +163,23 @@
 			productReference = A30000010000000000000001 /* MacClip.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B70000010000000000000001 /* MacClipTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B90000010000000000000001 /* Build configuration list for PBXNativeTarget "MacClipTests" */;
+			buildPhases = (
+				B80000010000000000000001 /* Sources */,
+				B40000010000000000000001 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B85000010000000000000001 /* PBXTargetDependency */,
+			);
+			name = MacClipTests;
+			productName = MacClipTests;
+			productReference = B30000010000000000000001 /* MacClipTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -142,6 +192,10 @@
 				TargetAttributes = {
 					A70000010000000000000001 = {
 						CreatedOnToolsVersion = 15.0;
+					};
+					B70000010000000000000001 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = A70000010000000000000001;
 					};
 				};
 			};
@@ -162,6 +216,7 @@
 			projectRoot = "";
 			targets = (
 				A70000010000000000000001 /* MacClip */,
+				B70000010000000000000001 /* MacClipTests */,
 			);
 		};
 /* End PBXProject section */
@@ -194,7 +249,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B80000010000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000010000000000000001 /* ClipboardItemTests.swift in Sources */,
+				B10000010000000000000002 /* ClipboardHistoryTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B85000010000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A70000010000000000000001 /* MacClip */;
+			targetProxy = B50000010000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		A90000010000000000000004 /* Debug */ = {
@@ -351,6 +423,38 @@
 			};
 			name = Release;
 		};
+		B90000010000000000000002 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.macclip.MacClipTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MacClip.app/Contents/MacOS/MacClip";
+			};
+			name = Debug;
+		};
+		B90000010000000000000003 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.macclip.MacClipTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MacClip.app/Contents/MacOS/MacClip";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -368,6 +472,15 @@
 			buildConfigurations = (
 				A90000010000000000000006 /* Debug */,
 				A90000010000000000000007 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B90000010000000000000001 /* Build configuration list for PBXNativeTarget "MacClipTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B90000010000000000000002 /* Debug */,
+				B90000010000000000000003 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

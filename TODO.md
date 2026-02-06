@@ -26,7 +26,7 @@
 
 ## Technical
 
-- [ ] Unit tests for ClipboardHistory model
+- [x] Unit tests for ClipboardHistory model
 - [ ] Reduce polling interval or use NSPasteboard observation if available
 - [ ] Sparkle framework for auto-updates
 - [ ] DMG or Homebrew Cask distribution
