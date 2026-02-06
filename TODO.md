@@ -17,6 +17,7 @@
 
 - [ ] Custom app icon
 - [ ] Ability to add a control to control center
+- [ ] Shortcut that displays a popup menu with latest few items that can be clicked on to paste
 - [ ] Timestamp display (e.g. "2 min ago") on each item
 - [ ] Dark/light mode-aware styling
 - [ ] Drag and drop items to reorder or paste
