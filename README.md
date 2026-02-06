@@ -1,6 +1,7 @@
 # MacClip
 
 A lightweight macOS menu bar clipboard manager. Keeps your last 10 copied text items and lets you paste them with a click or keyboard shortcut.
+This is an experiment in LLM assisted coding - I was missing the extended clipboard from ChromeOS, and this problem seemed like a good example to try to develop using Claude Code, Gemini CLI, Amp and such. Feel free to add features.
 
 ## Features
 
