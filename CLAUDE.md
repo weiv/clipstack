@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-mac-clip is a native macOS clipboard management app. It lives in the menu bar, monitors the system clipboard, maintains the last 10 copied text items in memory, and lets users paste previous items via click or keyboard shortcuts (Control+Option+1 through Control+Option+0).
+mac-clip is a native macOS clipboard management app. It lives in the menu bar, monitors the system clipboard, maintains the last 10 copied text items in memory, and lets users paste previous items via click or keyboard shortcuts (Command+Option+1 through Command+Option+0).
 
 ## Architecture
 
@@ -28,7 +28,7 @@ MacClip/
 ├── Services/
 │   ├── ClipboardMonitor.swift # Timer polling, changeCount tracking
 │   ├── PasteService.swift     # Pasteboard write + CGEvent Cmd+V simulation
-│   ├── HotKeyManager.swift    # 10 HotKey instances for Control+Option+1-0
+│   ├── HotKeyManager.swift    # 10 HotKey instances for Command+Option+1-0
 │   ├── PermissionService.swift# AXIsProcessTrustedWithOptions check/prompt
 │   └── PreferencesManager.swift# @AppStorage for Launch at Login, extensible for future prefs
 ├── Views/
@@ -66,7 +66,7 @@ xcodebuild test -project MacClip.xcodeproj -scheme MacClip -destination 'platfor
 
 ### How Paste Operations Work
 
-1. **User Action**: User selects an item from menu or uses Control+Option+1-0 shortcut
+1. **User Action**: User selects an item from menu or uses Command+Option+1-0 shortcut
 2. **PasteService.paste(text)**:
    - Records the current pasteboard `changeCount`
    - Sets `skipNextChangeCount = changeCount + 1` to mark the expected state change
