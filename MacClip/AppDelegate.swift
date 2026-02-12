@@ -7,6 +7,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         PermissionService.checkAccessibility()
 
+        // Initialize preferences
+        _ = PreferencesManager.shared
+
         clipboardMonitor = ClipboardMonitor()
         clipboardMonitor?.start()
 
@@ -17,5 +20,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ notification: Notification) {
         clipboardMonitor?.stop()
         hotKeyManager?.unregister()
+    }
+
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        // Only hide from Dock if there's no preferences window open
+        if SettingsOpener.preferencesWindow == nil {
+            DispatchQueue.main.async {
+                NSApp.setActivationPolicy(.accessory)
+                NSApp.deactivate()
+            }
+        }
+        return false
     }
 }

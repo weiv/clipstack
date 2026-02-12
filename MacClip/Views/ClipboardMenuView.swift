@@ -1,9 +1,7 @@
 import SwiftUI
-import ServiceManagement
 
 struct ClipboardMenuView: View {
     @ObservedObject var history = ClipboardHistory.shared
-    @State private var launchAtLogin = false
 
     var body: some View {
         if history.items.isEmpty {
@@ -37,13 +35,12 @@ struct ClipboardMenuView: View {
         }
         .disabled(history.items.isEmpty)
 
-        Toggle("Launch at Login", isOn: $launchAtLogin)
-            .onChange(of: launchAtLogin) { newValue in
-                setLaunchAtLogin(newValue)
-            }
-            .onAppear {
-                launchAtLogin = checkLaunchAtLogin()
-            }
+        Divider()
+
+        Button("Preferences...") {
+            SettingsOpener.openSettings()
+        }
+        .keyboardShortcut(",", modifiers: .command)
 
         Divider()
 
@@ -51,26 +48,5 @@ struct ClipboardMenuView: View {
             NSApplication.shared.terminate(nil)
         }
         .keyboardShortcut("q")
-    }
-
-    private func setLaunchAtLogin(_ enabled: Bool) {
-        if #available(macOS 13.0, *) {
-            do {
-                if enabled {
-                    try SMAppService.mainApp.register()
-                } else {
-                    try SMAppService.mainApp.unregister()
-                }
-            } catch {
-                NSLog("MacClip: Failed to set launch at login: \(error)")
-            }
-        }
-    }
-
-    private func checkLaunchAtLogin() -> Bool {
-        if #available(macOS 13.0, *) {
-            return SMAppService.mainApp.status == .enabled
-        }
-        return false
     }
 }

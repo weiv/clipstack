@@ -10,7 +10,11 @@
 ## P1 - Core functionality
 
 - [ ] Persist clipboard history to disk (survive app restarts)
-- [ ] Settings window for history size, polling interval, and shortcuts
+- [x] Settings window infrastructure (Launch at Login implemented)
+  - [x] Launch at Login toggle (with ServiceManagement)
+  - [ ] Configurable history size UI (preference model ready)
+  - [ ] Configurable polling interval UI (preference model ready)
+  - [ ] Keyboard shortcut configuration UI
 - [ ] Configurable history size (currently fixed at 10)
 - [ ] Configurable keyboard shortcuts
 - [ ] Search/filter history items (type to filter in menu)

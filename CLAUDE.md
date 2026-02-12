@@ -27,9 +27,13 @@ MacClip/
 │   ├── ClipboardMonitor.swift # Timer polling, changeCount tracking
 │   ├── PasteService.swift     # Pasteboard write + CGEvent Cmd+V simulation
 │   ├── HotKeyManager.swift    # 10 HotKey instances for Cmd+Shift+1-0
-│   └── PermissionService.swift# AXIsProcessTrustedWithOptions check/prompt
-└── Views/
-    └── ClipboardMenuView.swift# Menu items, Clear History, Launch at Login, Quit
+│   ├── PermissionService.swift# AXIsProcessTrustedWithOptions check/prompt
+│   └── PreferencesManager.swift# @AppStorage for Launch at Login, extensible for future prefs
+├── Views/
+│   ├── ClipboardMenuView.swift# Menu items, Clear History, Preferences, Quit
+│   └── PreferencesView.swift  # Settings Form (Launch at Login toggle)
+└── Helpers/
+    └── SettingsOpener.swift   # Window controller for preferences panel
 
 MacClipTests/
 ├── ClipboardItemTests.swift   # displayText, Equatable, identity
@@ -54,6 +58,28 @@ xcodebuild test -project MacClip.xcodeproj -scheme MacClip -destination 'platfor
 - Tests use `@testable import MacClip` with a hosted test bundle (TEST_HOST = MacClip.app)
 - `ClipboardHistory.init()` is internal (not private) so tests can create isolated instances
 - Always add tests when modifying model or service code
+
+## Preferences Architecture
+
+The preferences system uses a singleton pattern similar to `ClipboardHistory`:
+
+- **PreferencesManager** (Services/) — `ObservableObject` singleton with `@AppStorage` for persistence
+  - `launchAtLogin: Bool` — persists to UserDefaults, syncs with ServiceManagement
+  - Extensible for future preferences (history size, polling interval, etc.)
+  - Thread-safe initialization and property updates
+
+- **PreferencesView** (Views/) — SwiftUI Form for the preferences window UI
+  - Binds to `PreferencesManager.shared` for reactive state
+  - Organized in sections for logical grouping
+
+- **SettingsOpener** (Helpers/) — Window management for the preferences panel
+  - Creates NSWindow with PreferencesView hosted in NSHostingController
+  - Manages activation policy changes (`.accessory` ↔ `.regular`) for menu bar app behavior
+  - Called from ClipboardMenuView "Preferences..." button
+
+- **AppDelegate** — Handles Dock icon visibility
+  - `applicationShouldTerminateAfterLastWindowClosed(_:)` hides app from Dock when preferences window closes
+  - Uses `NSApp.setActivationPolicy(.accessory)` + `NSApp.deactivate()` to restore menu-bar-only mode
 
 ## Requirements
 
