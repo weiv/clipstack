@@ -2,20 +2,20 @@ import Cocoa
 import Carbon.HIToolbox
 
 enum PasteService {
-    /// Shared flag: set to true before writing to pasteboard so ClipboardMonitor ignores the change.
-    static var isOwnChange = false
+    /// Track the next expected pasteboard change count from our own paste operation.
+    /// This is more reliable than a time-based flag.
+    static var skipNextChangeCount: Int?
 
     static func paste(_ text: String) {
-        // Write the text to the system pasteboard
-        isOwnChange = true
         let pasteboard = NSPasteboard.general
+
+        // Store the change count that will occur after our write
+        let currentCount = pasteboard.changeCount
+        skipNextChangeCount = currentCount + 1
+
+        // Write the text to the system pasteboard
         pasteboard.clearContents()
         pasteboard.setString(text, forType: .string)
-
-        // Clear the flag after enough time for ClipboardMonitor to see and skip it
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-            isOwnChange = false
-        }
 
         // Delay to allow the menu to close and the previous app to regain focus
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {

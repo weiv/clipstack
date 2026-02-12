@@ -30,7 +30,10 @@ final class ClipboardMonitor {
         lastChangeCount = currentCount
 
         // Skip if this was our own paste operation
-        guard !PasteService.isOwnChange else { return }
+        if let skipCount = PasteService.skipNextChangeCount, currentCount == skipCount {
+            PasteService.skipNextChangeCount = nil
+            return
+        }
 
         guard let text = pasteboard.string(forType: .string) else { return }
 
