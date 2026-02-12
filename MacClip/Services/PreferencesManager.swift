@@ -28,6 +28,9 @@ final class PreferencesManager: ObservableObject {
                 }
             } catch {
                 NSLog("MacClip: Failed to set launch at login: \(error)")
+                // Reconcile state with actual system state
+                let actualState = SMAppService.mainApp.status == .enabled
+                launchAtLogin = actualState
             }
         }
     }

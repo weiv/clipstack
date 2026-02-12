@@ -4,7 +4,7 @@
 
 - [x] Replace time-based `PasteService.isOwnChange` skip logic with a more precise own-write tracker (avoid dropping real user clipboard changes)
 - [x] Make `ClipboardMonitor.start()` idempotent (prevent multiple timers)
-- [ ] Reconcile Launch at Login toggle state after register/unregister failures
+- [x] Reconcile Launch at Login toggle state after register/unregister failures
 - [ ] Improve Accessibility permission flow (avoid repeated prompts; add clear status/next step in UI)
 
 ## P1 - Core functionality
