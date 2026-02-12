@@ -9,7 +9,7 @@ This is an experiment in LLM assisted coding - I was missing the extended clipbo
 - Automatically captures text copied to the clipboard
 - Stores the 10 most recent items (duplicates move to top)
 - Paste any item by clicking it in the menu
-- Global keyboard shortcuts: **⌘⇧1** through **⌘⇧0** to paste items 1–10
+- Global keyboard shortcuts: **⌃⌥1** through **⌃⌥0** to paste items 1–10
 - Launch at Login toggle
 - Clear History option
 
@@ -51,7 +51,7 @@ MacClip/
 ├── Services/
 │   ├── ClipboardMonitor.swift # Timer polling, changeCount tracking
 │   ├── PasteService.swift     # Pasteboard write + CGEvent Cmd+V simulation
-│   ├── HotKeyManager.swift    # 10 HotKey instances for Cmd+Shift+1-0
+│   ├── HotKeyManager.swift    # 10 HotKey instances for Control+Option+1-0
 │   └── PermissionService.swift# AXIsProcessTrustedWithOptions check/prompt
 └── Views/
     └── ClipboardMenuView.swift# Menu items, Clear History, Launch at Login, Quit

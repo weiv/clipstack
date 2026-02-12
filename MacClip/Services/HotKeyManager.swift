@@ -11,7 +11,7 @@ final class HotKeyManager {
     }
 
     func register() {
-        // Map Cmd+Shift+1 through Cmd+Shift+0 to history indices 0-9
+        // Map Control+Option+1 through Control+Option+0 to history indices 0-9
         // Keys 1-9 map to indices 0-8, key 0 maps to index 9
         let keyMappings: [(Key, Int)] = [
             (.one, 0),
@@ -27,7 +27,7 @@ final class HotKeyManager {
         ]
 
         for (key, index) in keyMappings {
-            let hk = HotKey(key: key, modifiers: [.command, .shift])
+            let hk = HotKey(key: key, modifiers: [.control, .option])
             hk.keyDownHandler = { [weak self] in
                 guard let self else { return }
                 if let item = self.history.item(at: index) {

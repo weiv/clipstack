@@ -35,7 +35,7 @@ Essential features for a usable clipboard manager:
   - PreferencesManager has `historySize` property ready
   - Need to update ClipboardHistory to respect the preference
 - [ ] Configurable keyboard shortcuts
-  - Currently hardcoded Cmd+Shift+1-0
+  - Currently hardcoded Control+Option+1-0
   - Need UI for capturing and storing custom shortcuts
   - HotKeyManager needs to dynamically register shortcuts
 - [ ] Search/filter history items (type to filter in menu)
@@ -75,7 +75,7 @@ Polish and advanced features for competitive clipboard manager:
   - Like Alfred snippets: save templates with {{variables}}
   - Separate from clipboard history
 - [ ] Shortcut that displays a popup menu with latest few items that can be clicked on to paste
-  - Already partially implemented (Cmd+Shift+0 shows popup menu)
+  - Already partially implemented (Control+Option+0 shows popup menu)
   - Enhance with larger preview and better interaction
 - [ ] Timestamp display (e.g. "2 min ago") on each item
   - Add relative time helper function
