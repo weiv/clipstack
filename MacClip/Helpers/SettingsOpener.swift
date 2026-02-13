@@ -4,7 +4,7 @@ import SwiftUI
 class PreferencesWindowController: NSWindowController, NSWindowDelegate {
     convenience init() {
         let hostingController = NSHostingController(rootView: PreferencesView())
-        let window = NSWindow(contentViewController: hostingController)
+        let window = PreferencesWindow(contentViewController: hostingController)
         window.title = "Preferences"
         window.setFrameAutosaveName("PreferencesWindow")
         self.init(window: window)
@@ -14,6 +14,17 @@ class PreferencesWindowController: NSWindowController, NSWindowDelegate {
     func windowWillClose(_ notification: Notification) {
         // Clear the reference so AppDelegate knows to hide from Dock
         SettingsOpener.preferencesWindow = nil
+    }
+}
+
+// Custom NSWindow to handle ESC key
+class PreferencesWindow: NSWindow {
+    override func keyDown(with event: NSEvent) {
+        if event.keyCode == 53 {  // ESC key
+            self.close()
+        } else {
+            super.keyDown(with: event)
+        }
     }
 }
 
