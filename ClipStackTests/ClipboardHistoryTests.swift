@@ -1,5 +1,5 @@
 import XCTest
-@testable import MacClip
+@testable import ClipStack
 
 final class ClipboardHistoryTests: XCTestCase {
 

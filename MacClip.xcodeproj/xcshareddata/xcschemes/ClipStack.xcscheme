@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A70000010000000000000001"
-               BuildableName = "MacClip.app"
-               BlueprintName = "MacClip"
+               BuildableName = "ClipStack.app"
+               BlueprintName = "ClipStack"
                ReferencedContainer = "container:MacClip.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -34,8 +34,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B70000010000000000000001"
-               BuildableName = "MacClipTests.xctest"
-               BlueprintName = "MacClipTests"
+               BuildableName = "ClipStackTests.xctest"
+               BlueprintName = "ClipStackTests"
                ReferencedContainer = "container:MacClip.xcodeproj">
             </BuildableReference>
          </TestableReference>

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-mac-clip is a native macOS clipboard management app. It lives in the menu bar, monitors the system clipboard, maintains the last 10 copied text items in memory, and lets users paste previous items via click or keyboard shortcuts (Command+Option+1 through Command+Option+0).
+ClipStack is a native macOS clipboard management app. It lives in the menu bar, monitors the system clipboard, maintains the last 10 copied text items in memory, and lets users paste previous items via click or keyboard shortcuts with customizable modifier keys (5 options available).
 
 ## Architecture
 
@@ -19,8 +19,8 @@ mac-clip is a native macOS clipboard management app. It lives in the menu bar, m
 ### Key Files
 
 ```
-MacClip/
-├── MacClipApp.swift           # @main, MenuBarExtra scene, AppDelegate adaptor
+ClipStack/
+├── ClipStackApp.swift           # @main, MenuBarExtra scene, AppDelegate adaptor
 ├── AppDelegate.swift          # Init services, permission check
 ├── Models/
 │   ├── ClipboardItem.swift    # Identifiable struct (id, text, copiedAt, displayText)
@@ -37,7 +37,7 @@ MacClip/
 └── Helpers/
     └── SettingsOpener.swift   # Window controller for preferences panel
 
-MacClipTests/
+ClipStackTests/
 ├── ClipboardItemTests.swift     # displayText, Equatable, identity
 ├── ClipboardHistoryTests.swift  # add, dedup, cap, item(at:), clear
 └── ClipboardMonitorTests.swift  # start() idempotency, timer management
@@ -47,18 +47,18 @@ MacClipTests/
 
 ```bash
 # Build
-xcodebuild -project MacClip.xcodeproj -scheme MacClip -configuration Debug build
+xcodebuild -project MacClip.xcodeproj -scheme ClipStack -configuration Debug build
 
 # Run
-open "$(xcodebuild -project MacClip.xcodeproj -scheme MacClip -showBuildSettings 2>/dev/null | grep ' BUILT_PRODUCTS_DIR' | awk '{print $3}')/MacClip.app"
+open "$(xcodebuild -project MacClip.xcodeproj -scheme ClipStack -showBuildSettings 2>/dev/null | grep ' BUILT_PRODUCTS_DIR' | awk '{print $3}')/ClipStack.app"
 
 # Test
-xcodebuild test -project MacClip.xcodeproj -scheme MacClip -destination 'platform=macOS'
+xcodebuild test -project MacClip.xcodeproj -scheme ClipStack -destination 'platform=macOS'
 ```
 
 ## Testing
 
-- Tests use `@testable import MacClip` with a hosted test bundle (TEST_HOST = MacClip.app)
+- Tests use `@testable import ClipStack` with a hosted test bundle (TEST_HOST = ClipStack.app)
 - `ClipboardHistory.init()` is internal (not private) so tests can create isolated instances
 - Always add tests when modifying model or service code
 

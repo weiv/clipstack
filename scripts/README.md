@@ -1,4 +1,4 @@
-# mac-clip Development Scripts
+# ClipStack Development Scripts
 
 Quick commands to speed up development. Add the scripts directory to your PATH for global access:
 
@@ -12,7 +12,7 @@ Then use any script from the project root or anywhere.
 
 ## build-run
 
-Build and launch the MacClip app in one command.
+Build and launch the ClipStack app in one command.
 
 ```bash
 ./scripts/build-run
@@ -57,7 +57,7 @@ add-service MyService
 ```
 
 **What it does:**
-- Creates `MacClip/Services/MyService.swift`
+- Creates `ClipStack/Services/MyService.swift`
 - Generates proper class structure with `init(history:)`, `start()`, `stop()`
 - Prompts to create corresponding test file
 - Reminds you to integrate with AppDelegate
@@ -82,10 +82,10 @@ add-test MyModel
 ```
 
 **What it does:**
-- Creates `MacClipTests/MyModelTests.swift`
+- Creates `ClipStackTests/MyModelTests.swift`
 - Auto-detects if it's a service or model
 - Generates appropriate test template with setUp/tearDown
-- Uses `@testable import MacClip` following project pattern
+- Uses `@testable import ClipStack` following project pattern
 
 **Example:**
 ```bash

@@ -25,7 +25,7 @@ Essential features for a usable clipboard manager:
 
 - [ ] Persist clipboard history to disk (survive app restarts)
   - Currently stored only in memory; lost on app restart
-  - Consider JSON or SQLite format in ~/Library/Application Support/MacClip/
+  - Consider JSON or SQLite format in ~/Library/Application Support/ClipStack/
 - [x] Settings window infrastructure
   - [x] Launch at Login toggle (with ServiceManagement)
   - [x] Keyboard shortcut modifier selection (Command+Option, Command+Shift, Control+Option, etc.)

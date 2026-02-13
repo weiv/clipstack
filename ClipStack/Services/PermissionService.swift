@@ -31,12 +31,12 @@ enum PermissionService {
 
     private static func logAccessibilityRequired() {
         NSLog("""
-        MacClip: Accessibility permission is required for paste simulation to work.
+        ClipStack: Accessibility permission is required for paste simulation to work.
         To enable it:
         1. Open System Settings > Privacy & Security > Accessibility
         2. Click the lock to make changes
-        3. Add MacClip to the list of allowed apps
-        4. Restart MacClip
+        3. Add ClipStack to the list of allowed apps
+        4. Restart ClipStack
         """)
     }
 }

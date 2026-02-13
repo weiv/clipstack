@@ -1,11 +1,11 @@
 import SwiftUI
 
 @main
-struct MacClipApp: App {
+struct ClipStackApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
-        MenuBarExtra("MacClip", systemImage: "doc.on.clipboard") {
+        MenuBarExtra("ClipStack", systemImage: "doc.on.clipboard") {
             ClipboardMenuView()
         }
     }

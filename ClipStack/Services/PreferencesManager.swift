@@ -77,7 +77,7 @@ final class PreferencesManager: ObservableObject {
                     try SMAppService.mainApp.unregister()
                 }
             } catch {
-                NSLog("MacClip: Failed to set launch at login: \(error)")
+                NSLog("ClipStack: Failed to set launch at login: \(error)")
                 // Reconcile state with actual system state
                 let actualState = SMAppService.mainApp.status == .enabled
                 launchAtLogin = actualState

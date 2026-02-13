@@ -115,7 +115,7 @@
 			<key>lastKnownFileType</key>
 			<string>sourcecode.swift</string>
 			<key>path</key>
-			<string>MacClipApp.swift</string>
+			<string>ClipStackApp.swift</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -236,7 +236,7 @@
 			<key>lastKnownFileType</key>
 			<string>text.plist.entitlements</string>
 			<key>path</key>
-			<string>MacClip.entitlements</string>
+			<string>ClipStack.entitlements</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -282,7 +282,7 @@
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>path</key>
-			<string>MacClip.app</string>
+			<string>ClipStack.app</string>
 			<key>sourceTree</key>
 			<string>BUILT_PRODUCTS_DIR</string>
 		</dict>
@@ -338,7 +338,7 @@
 			<key>isa</key>
 			<string>PBXGroup</string>
 			<key>path</key>
-			<string>MacClip</string>
+			<string>ClipStack</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -418,13 +418,13 @@
 			<key>isa</key>
 			<string>PBXNativeTarget</string>
 			<key>name</key>
-			<string>MacClip</string>
+			<string>ClipStack</string>
 			<key>packageProductDependencies</key>
 			<array>
 				<string>A5000001000000000000000B</string>
 			</array>
 			<key>productName</key>
-			<string>MacClip</string>
+			<string>ClipStack</string>
 			<key>productReference</key>
 			<string>A30000010000000000000001</string>
 			<key>productType</key>
@@ -766,7 +766,7 @@
 				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
 				<string>AppIcon</string>
 				<key>CODE_SIGN_ENTITLEMENTS</key>
-				<string>MacClip/MacClip.entitlements</string>
+				<string>ClipStack/ClipStack.entitlements</string>
 				<key>CODE_SIGN_STYLE</key>
 				<string>Automatic</string>
 				<key>COMBINE_HIDPI_IMAGES</key>
@@ -776,7 +776,7 @@
 				<key>GENERATE_INFOPLIST_FILE</key>
 				<string>YES</string>
 				<key>INFOPLIST_FILE</key>
-				<string>MacClip/Info.plist</string>
+				<string>ClipStack/Info.plist</string>
 				<key>INFOPLIST_KEY_LSUIElement</key>
 				<string>YES</string>
 				<key>INFOPLIST_KEY_NSHumanReadableCopyright</key>
@@ -789,7 +789,7 @@
 				<key>MARKETING_VERSION</key>
 				<string>1.0</string>
 				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
-				<string>com.macclip.MacClip</string>
+				<string>com.clipstack.ClipStack</string>
 				<key>PRODUCT_NAME</key>
 				<string>$(TARGET_NAME)</string>
 				<key>SWIFT_EMIT_LOC_STRINGS</key>
@@ -809,7 +809,7 @@
 				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
 				<string>AppIcon</string>
 				<key>CODE_SIGN_ENTITLEMENTS</key>
-				<string>MacClip/MacClip.entitlements</string>
+				<string>ClipStack/ClipStack.entitlements</string>
 				<key>CODE_SIGN_STYLE</key>
 				<string>Automatic</string>
 				<key>COMBINE_HIDPI_IMAGES</key>
@@ -819,7 +819,7 @@
 				<key>GENERATE_INFOPLIST_FILE</key>
 				<string>YES</string>
 				<key>INFOPLIST_FILE</key>
-				<string>MacClip/Info.plist</string>
+				<string>ClipStack/Info.plist</string>
 				<key>INFOPLIST_KEY_LSUIElement</key>
 				<string>YES</string>
 				<key>INFOPLIST_KEY_NSHumanReadableCopyright</key>
@@ -832,7 +832,7 @@
 				<key>MARKETING_VERSION</key>
 				<string>1.0</string>
 				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
-				<string>com.macclip.MacClip</string>
+				<string>com.clipstack.ClipStack</string>
 				<key>PRODUCT_NAME</key>
 				<string>$(TARGET_NAME)</string>
 				<key>SWIFT_EMIT_LOC_STRINGS</key>
@@ -904,7 +904,7 @@
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>path</key>
-			<string>MacClipTests.xctest</string>
+			<string>ClipStackTests.xctest</string>
 			<key>sourceTree</key>
 			<string>BUILT_PRODUCTS_DIR</string>
 		</dict>
@@ -930,7 +930,7 @@
 			<key>remoteGlobalIDString</key>
 			<string>A70000010000000000000001</string>
 			<key>remoteInfo</key>
-			<string>MacClip</string>
+			<string>ClipStack</string>
 		</dict>
 		<key>B60000010000000000000001</key>
 		<dict>
@@ -942,7 +942,7 @@
 			<key>isa</key>
 			<string>PBXGroup</string>
 			<key>path</key>
-			<string>MacClipTests</string>
+			<string>ClipStackTests</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -964,9 +964,9 @@
 			<key>isa</key>
 			<string>PBXNativeTarget</string>
 			<key>name</key>
-			<string>MacClipTests</string>
+			<string>ClipStackTests</string>
 			<key>productName</key>
-			<string>MacClipTests</string>
+			<string>ClipStackTests</string>
 			<key>productReference</key>
 			<string>B30000010000000000000001</string>
 			<key>productType</key>
@@ -1024,7 +1024,7 @@
 				<key>MARKETING_VERSION</key>
 				<string>1.0</string>
 				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
-				<string>com.macclip.MacClipTests</string>
+				<string>com.clipstack.ClipStackTests</string>
 				<key>PRODUCT_NAME</key>
 				<string>$(TARGET_NAME)</string>
 				<key>SWIFT_EMIT_LOC_STRINGS</key>
@@ -1032,7 +1032,7 @@
 				<key>SWIFT_VERSION</key>
 				<string>5.0</string>
 				<key>TEST_HOST</key>
-				<string>$(BUILT_PRODUCTS_DIR)/MacClip.app/Contents/MacOS/MacClip</string>
+				<string>$(BUILT_PRODUCTS_DIR)/ClipStack.app/Contents/MacOS/ClipStack</string>
 			</dict>
 			<key>isa</key>
 			<string>XCBuildConfiguration</string>
@@ -1054,7 +1054,7 @@
 				<key>MARKETING_VERSION</key>
 				<string>1.0</string>
 				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
-				<string>com.macclip.MacClipTests</string>
+				<string>com.clipstack.ClipStackTests</string>
 				<key>PRODUCT_NAME</key>
 				<string>$(TARGET_NAME)</string>
 				<key>SWIFT_EMIT_LOC_STRINGS</key>
@@ -1062,7 +1062,7 @@
 				<key>SWIFT_VERSION</key>
 				<string>5.0</string>
 				<key>TEST_HOST</key>
-				<string>$(BUILT_PRODUCTS_DIR)/MacClip.app/Contents/MacOS/MacClip</string>
+				<string>$(BUILT_PRODUCTS_DIR)/ClipStack.app/Contents/MacOS/ClipStack</string>
 			</dict>
 			<key>isa</key>
 			<string>XCBuildConfiguration</string>

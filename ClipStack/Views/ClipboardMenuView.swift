@@ -41,7 +41,7 @@ struct ClipboardMenuView: View {
 
         Divider()
 
-        Button("Quit MacClip") {
+        Button("Quit ClipStack") {
             NSApplication.shared.terminate(nil)
         }
         .keyboardShortcut("q")
