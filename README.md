@@ -9,9 +9,10 @@ This is an experiment in LLM assisted coding - I was missing the extended clipbo
 - Automatically captures text copied to the clipboard
 - Stores the 10 most recent items (duplicates move to top)
 - Paste any item by clicking it in the menu
-- Global keyboard shortcuts: **⌘⌥1** through **⌘⌥0** to paste items 1–10
+- Global keyboard shortcuts to paste items 1–10 (customizable modifier keys: ⌘⌥, ⌘⇧, ⌃⌥, ⌃⇧, ⌘⌃)
 - Launch at Login toggle
 - Clear History option
+- Preferences window with keyboard shortcut modifier selection
 
 ## Requirements
 

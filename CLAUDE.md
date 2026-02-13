@@ -28,9 +28,9 @@ MacClip/
 ├── Services/
 │   ├── ClipboardMonitor.swift # Timer polling, changeCount tracking
 │   ├── PasteService.swift     # Pasteboard write + CGEvent Cmd+V simulation
-│   ├── HotKeyManager.swift    # 10 HotKey instances for Command+Option+1-0
+│   ├── HotKeyManager.swift    # 10 HotKey instances, dynamic modifiers from preferences
 │   ├── PermissionService.swift# AXIsProcessTrustedWithOptions check/prompt
-│   └── PreferencesManager.swift# @AppStorage for Launch at Login, extensible for future prefs
+│   └── PreferencesManager.swift# @AppStorage, manages hotkey modifiers and launch at login
 ├── Views/
 │   ├── ClipboardMenuView.swift# Menu items, Clear History, Preferences, Quit
 │   └── PreferencesView.swift  # Settings Form (Launch at Login toggle)
@@ -100,6 +100,9 @@ The preferences system uses a singleton pattern similar to `ClipboardHistory`:
 
 - **PreferencesManager** (Services/) — `ObservableObject` singleton with `@AppStorage` for persistence
   - `launchAtLogin: Bool` — persists to UserDefaults, syncs with ServiceManagement
+  - `hotKeyModifiers: HotKeyModifierCombo` — persists to UserDefaults, notifies HotKeyManager on change
+    - 5 options: Command+Option, Command+Shift, Control+Option, Control+Shift, Command+Control
+    - Default: Command+Option
   - Reconciles state on failure: if register/unregister fails, syncs back to actual system state to prevent UI desynchronization
   - Extensible for future preferences (history size, polling interval, etc.)
   - Syncs with system state on init to handle out-of-app preference changes
@@ -109,7 +112,8 @@ The preferences system uses a singleton pattern similar to `ClipboardHistory`:
   - Organized in sections for logical grouping
 
 - **SettingsOpener** (Helpers/) — Window management for the preferences panel
-  - Creates NSWindow with PreferencesView hosted in NSHostingController
+  - Creates custom PreferencesWindow with keyDown override for ESC key support
+  - PreferencesView hosted in NSHostingController
   - Manages activation policy changes (`.accessory` ↔ `.regular`) for menu bar app behavior
   - Called from ClipboardMenuView "Preferences..." button
 

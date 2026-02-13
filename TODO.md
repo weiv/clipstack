@@ -26,18 +26,19 @@ Essential features for a usable clipboard manager:
 - [ ] Persist clipboard history to disk (survive app restarts)
   - Currently stored only in memory; lost on app restart
   - Consider JSON or SQLite format in ~/Library/Application Support/MacClip/
-- [x] Settings window infrastructure (Launch at Login implemented)
+- [x] Settings window infrastructure
   - [x] Launch at Login toggle (with ServiceManagement)
+  - [x] Keyboard shortcut modifier selection (Command+Option, Command+Shift, Control+Option, etc.)
+  - [x] ESC key to close preferences window
   - [ ] Configurable history size UI (preference model ready in PreferencesManager)
   - [ ] Configurable polling interval UI (preference model ready in PreferencesManager)
-  - [ ] Keyboard shortcut configuration UI (needs key capture component)
 - [ ] Configurable history size (currently fixed at 10)
   - PreferencesManager has `historySize` property ready
   - Need to update ClipboardHistory to respect the preference
-- [ ] Configurable keyboard shortcuts
-  - Currently hardcoded Command+Option+1-0
-  - Need UI for capturing and storing custom shortcuts
-  - HotKeyManager needs to dynamically register shortcuts
+- [x] Configurable keyboard shortcuts (modifier keys only)
+  - [x] User can select from 5 common modifier combinations
+  - [x] Number keys (1-0) remain fixed
+  - Future: allow fully custom key bindings
 - [ ] Search/filter history items (type to filter in menu)
   - Add text field at top of menu
   - Filter items in real-time as user types
