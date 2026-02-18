@@ -6,7 +6,7 @@ struct ClipStackApp: App {
 
     var body: some Scene {
         MenuBarExtra("ClipStack", systemImage: "doc.on.clipboard") {
-            ClipboardMenuView()
+            ClipboardMenuView(updater: appDelegate.updaterController.updater)
         }
     }
 }

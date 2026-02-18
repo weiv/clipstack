@@ -5,7 +5,7 @@ import Sparkle
 struct ClipboardMenuView: View {
     @ObservedObject var history = ClipboardHistory.shared
     @ObservedObject var preferences = PreferencesManager.shared
-    private let updater = (NSApp.delegate as? AppDelegate)?.updaterController.updater
+    let updater: SPUUpdater?
 
     var body: some View {
         if history.items.isEmpty {
