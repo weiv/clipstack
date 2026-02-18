@@ -15,7 +15,7 @@ struct PreferencesView: View {
                         Text("\(size) items").tag(size)
                     }
                 }
-                .pickerStyle(.radioGroup)
+                .pickerStyle(.menu)
             }
 
             Section("Keyboard Shortcuts") {
@@ -38,7 +38,7 @@ struct PreferencesView: View {
                     Text("Normal (1s)").tag(1.0)
                     Text("Slow (2s)").tag(2.0)
                 }
-                .pickerStyle(.radioGroup)
+                .pickerStyle(.menu)
 
                 Text("How often ClipStack checks for clipboard changes")
                     .font(.caption)
@@ -46,7 +46,7 @@ struct PreferencesView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 400, height: 580)
+        .frame(width: 400, height: 400)
         .padding()
     }
 }
