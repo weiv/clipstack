@@ -1,9 +1,15 @@
 import Cocoa
+import Sparkle
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var clipboardMonitor: ClipboardMonitor?
     private var hotKeyManager: HotKeyManager?
     private var observers: [NSObjectProtocol] = []
+    let updaterController = SPUStandardUpdaterController(
+        startingUpdater: true,
+        updaterDelegate: nil,
+        userDriverDelegate: nil
+    )
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         PermissionService.checkAccessibility()

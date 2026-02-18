@@ -18,6 +18,7 @@
 		A10000010000000000000009 /* ClipboardMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000009 /* ClipboardMenuView.swift */; };
 		A1000001000000000000000A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2000001000000000000000A /* Assets.xcassets */; };
 		A1000001000000000000000B /* HotKey in Frameworks */ = {isa = PBXBuildFile; productRef = A5000001000000000000000B /* HotKey */; };
+		AB0000010000000000000001 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = AB0000010000000000000003 /* Sparkle */; };
 		A1000001000000000000000E /* PreferencesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000001000000000000000E /* PreferencesManager.swift */; };
 		A1000001000000000000000F /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000001000000000000000F /* PreferencesView.swift */; };
 		A10000010000000000000010 /* Helpers/SettingsOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000010 /* Helpers/SettingsOpener.swift */; };
@@ -69,6 +70,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1000001000000000000000B /* HotKey in Frameworks */,
+				AB0000010000000000000001 /* Sparkle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,6 +177,7 @@
 			name = ClipStack;
 			packageProductDependencies = (
 				A5000001000000000000000B /* HotKey */,
+				AB0000010000000000000003 /* Sparkle */,
 			);
 			productName = ClipStack;
 			productReference = A30000010000000000000001 /* ClipStack.app */;
@@ -227,6 +230,7 @@
 			mainGroup = A60000010000000000000001;
 			packageReferences = (
 				AA000001000000000000000B /* XCRemoteSwiftPackageReference "HotKey" */,
+				AB0000010000000000000002 /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			productRefGroup = A60000010000000000000007 /* Products */;
 			projectDirPath = "";
@@ -531,6 +535,14 @@
 				minimumVersion = 0.2.1;
 			};
 		};
+		AB0000010000000000000002 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -538,6 +550,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AA000001000000000000000B /* XCRemoteSwiftPackageReference "HotKey" */;
 			productName = HotKey;
+		};
+		AB0000010000000000000003 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AB0000010000000000000002 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

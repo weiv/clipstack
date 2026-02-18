@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>ClipStack</title>
+        <link>https://github.com/weiv/clipstack</link>
+        <description>ClipStack update feed</description>
+        <language>en</language>
+        <item>
+            <title>Version 0.1.3</title>
+            <pubDate>Mon, 17 Feb 2026 00:00:00 +0000</pubDate>
+            <sparkle:version>0.1.3</sparkle:version>
+            <sparkle:shortVersionString>0.1.3</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+            <enclosure
+                url="https://github.com/weiv/clipstack/releases/download/v0.1.3/ClipStack.dmg"
+                sparkle:edSignature="zAQPYiiHd+l96xYW84oZRS65+ZqJk52iqmtvyOfohL2AcxDIWM784B1/gybeJBJVQTNT/uxO1P3Dnvj6EDRQDw=="
+                length="2533155"
+                type="application/octet-stream"
+            />
+        </item>
+    </channel>
+</rss>

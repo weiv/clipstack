@@ -4,5 +4,11 @@
 <dict>
 	<key>LSUIElement</key>
 	<true/>
+	<key>SUFeedURL</key>
+	<string>https://raw.githubusercontent.com/weiv/clipstack/main/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>lNOvO6HwLPMYb7DqtzVA3plc8eHPoPb48hETTeaZcV0=</string>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
 </dict>
 </plist>

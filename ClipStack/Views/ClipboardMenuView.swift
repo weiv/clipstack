@@ -1,9 +1,11 @@
 import SwiftUI
 import AppKit
+import Sparkle
 
 struct ClipboardMenuView: View {
     @ObservedObject var history = ClipboardHistory.shared
     @ObservedObject var preferences = PreferencesManager.shared
+    private let updater = (NSApp.delegate as? AppDelegate)?.updaterController.updater
 
     var body: some View {
         if history.items.isEmpty {
@@ -30,6 +32,11 @@ struct ClipboardMenuView: View {
         .disabled(history.items.isEmpty)
 
         Divider()
+
+        Button("Check for Updates...") {
+            updater?.checkForUpdates()
+        }
+        .disabled(updater?.canCheckForUpdates == false)
 
         Button("Preferences...") {
             SettingsOpener.openSettings()
