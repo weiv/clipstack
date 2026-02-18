@@ -30,11 +30,10 @@ Essential features for a usable clipboard manager:
   - [x] Launch at Login toggle (with ServiceManagement)
   - [x] Keyboard shortcut modifier selection (Command+Option, Command+Shift, Control+Option, etc.)
   - [x] ESC key to close preferences window
-  - [ ] Configurable history size UI (preference model ready in PreferencesManager)
-  - [ ] Configurable polling interval UI (preference model ready in PreferencesManager)
-- [ ] Configurable history size (currently fixed at 10)
-  - PreferencesManager has `historySize` property ready
-  - Need to update ClipboardHistory to respect the preference
+  - [x] Configurable history size UI (5, 10, 15, 20, 25, 50 items)
+  - [x] Configurable polling interval UI (0.25s / 0.5s / 1s / 2s)
+- [x] Configurable history size (currently fixed at 10)
+  - ClipboardHistory.maxItems is now dynamic; trims live when reduced
 - [x] Configurable keyboard shortcuts (modifier keys only)
   - [x] User can select from 5 common modifier combinations
   - [x] Number keys (1-0) remain fixed

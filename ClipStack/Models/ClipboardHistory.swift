@@ -2,11 +2,21 @@ import Foundation
 
 final class ClipboardHistory: ObservableObject {
     static let shared = ClipboardHistory()
-    private static let maxItems = 10
+    private static let defaultMaxItems = 10
+
+    var maxItems: Int {
+        didSet {
+            if items.count > maxItems {
+                items = Array(items.prefix(maxItems))
+            }
+        }
+    }
 
     @Published private(set) var items: [ClipboardItem] = []
 
-    init() {}
+    init(maxItems: Int = defaultMaxItems) {
+        self.maxItems = maxItems
+    }
 
     func add(_ content: ClipboardContent) {
         // For plain text, reject empty/whitespace-only
@@ -20,9 +30,8 @@ final class ClipboardHistory: ObservableObject {
         let item = ClipboardItem(content: content, copiedAt: Date())
         items.insert(item, at: 0)
 
-        // Keep only the most recent items
-        if items.count > Self.maxItems {
-            items = Array(items.prefix(Self.maxItems))
+        if items.count > maxItems {
+            items = Array(items.prefix(maxItems))
         }
     }
 

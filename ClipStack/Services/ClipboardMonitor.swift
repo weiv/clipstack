@@ -3,17 +3,19 @@ import Cocoa
 final class ClipboardMonitor {
     private var timer: Timer?
     private var lastChangeCount: Int
+    private var interval: TimeInterval
 
     private let history: ClipboardHistory
 
-    init(history: ClipboardHistory = .shared) {
+    init(history: ClipboardHistory = .shared, interval: TimeInterval = 0.5) {
         self.history = history
+        self.interval = interval
         self.lastChangeCount = NSPasteboard.general.changeCount
     }
 
     func start() {
         guard timer == nil else { return }
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
             self?.checkPasteboard()
         }
     }
@@ -21,6 +23,12 @@ final class ClipboardMonitor {
     func stop() {
         timer?.invalidate()
         timer = nil
+    }
+
+    func updateInterval(_ interval: TimeInterval) {
+        self.interval = interval
+        stop()
+        start()
     }
 
     private func checkPasteboard() {

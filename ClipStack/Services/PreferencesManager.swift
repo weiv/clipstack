@@ -63,6 +63,14 @@ final class PreferencesManager: ObservableObject {
         didSet { applyHotKeyModifiers() }
     }
 
+    @AppStorage("historySize") var historySize: Int = 10 {
+        didSet { applyHistorySize() }
+    }
+
+    @AppStorage("pollingInterval") var pollingInterval: Double = 0.5 {
+        didSet { applyPollingInterval() }
+    }
+
     var hotKeyModifiers: HotKeyModifierCombo {
         get { HotKeyModifierCombo(rawValue: hotKeyModifiersRaw) ?? .commandOption }
         set { hotKeyModifiersRaw = newValue.rawValue }
@@ -99,6 +107,20 @@ final class PreferencesManager: ObservableObject {
         NotificationCenter.default.post(
             name: NSNotification.Name("HotKeyModifiersDidChange"),
             object: hotKeyModifiers.modifierFlags
+        )
+    }
+
+    private func applyHistorySize() {
+        NotificationCenter.default.post(
+            name: NSNotification.Name("HistorySizeDidChange"),
+            object: historySize
+        )
+    }
+
+    private func applyPollingInterval() {
+        NotificationCenter.default.post(
+            name: NSNotification.Name("PollingIntervalDidChange"),
+            object: pollingInterval
         )
     }
 }

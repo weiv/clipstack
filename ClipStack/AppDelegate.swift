@@ -3,7 +3,7 @@ import Cocoa
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var clipboardMonitor: ClipboardMonitor?
     private var hotKeyManager: HotKeyManager?
-    private var preferencesObserver: NSObjectProtocol?
+    private var observers: [NSObjectProtocol] = []
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         PermissionService.checkAccessibility()
@@ -11,29 +11,45 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // Initialize preferences
         _ = PreferencesManager.shared
 
-        clipboardMonitor = ClipboardMonitor()
+        let prefs = PreferencesManager.shared
+        ClipboardHistory.shared.maxItems = prefs.historySize
+
+        clipboardMonitor = ClipboardMonitor(interval: prefs.pollingInterval)
         clipboardMonitor?.start()
 
         hotKeyManager = HotKeyManager()
-        let modifiers = PreferencesManager.shared.hotKeyModifiers.modifierFlags
-        hotKeyManager?.register(modifiers: modifiers)
+        hotKeyManager?.register(modifiers: prefs.hotKeyModifiers.modifierFlags)
 
         // Listen for preference changes
-        preferencesObserver = NotificationCenter.default.addObserver(
+        let nc = NotificationCenter.default
+        observers.append(nc.addObserver(
             forName: NSNotification.Name("HotKeyModifiersDidChange"),
-            object: nil,
-            queue: .main
+            object: nil, queue: .main
         ) { [weak self] notification in
             if let modifiers = notification.object as? NSEvent.ModifierFlags {
                 self?.hotKeyManager?.updateModifiers(modifiers)
             }
-        }
+        })
+        observers.append(nc.addObserver(
+            forName: NSNotification.Name("HistorySizeDidChange"),
+            object: nil, queue: .main
+        ) { notification in
+            if let size = notification.object as? Int {
+                ClipboardHistory.shared.maxItems = size
+            }
+        })
+        observers.append(nc.addObserver(
+            forName: NSNotification.Name("PollingIntervalDidChange"),
+            object: nil, queue: .main
+        ) { [weak self] notification in
+            if let interval = notification.object as? Double {
+                self?.clipboardMonitor?.updateInterval(interval)
+            }
+        })
     }
 
     func applicationWillTerminate(_ notification: Notification) {
-        if let observer = preferencesObserver {
-            NotificationCenter.default.removeObserver(observer)
-        }
+        observers.forEach { NotificationCenter.default.removeObserver($0) }
         clipboardMonitor?.stop()
         hotKeyManager?.unregister()
     }
