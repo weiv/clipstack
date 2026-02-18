@@ -1,6 +1,14 @@
 import XCTest
 @testable import ClipStack
 
+// Helper for tests to extract plain text value without touching production code
+private extension ClipboardItem {
+    var textValue: String? {
+        guard case .plainText(let s) = content else { return nil }
+        return s
+    }
+}
+
 final class ClipboardHistoryTests: XCTestCase {
 
     var history: ClipboardHistory!
@@ -18,158 +26,195 @@ final class ClipboardHistoryTests: XCTestCase {
     // MARK: - add()
 
     func testAddSingleItem() {
-        history.add("hello")
+        history.add(.plainText("hello"))
         XCTAssertEqual(history.items.count, 1)
-        XCTAssertEqual(history.items.first?.text, "hello")
+        XCTAssertEqual(history.items.first?.textValue, "hello")
     }
 
     func testAddInsertsAtFront() {
-        history.add("first")
-        history.add("second")
-        XCTAssertEqual(history.items[0].text, "second")
-        XCTAssertEqual(history.items[1].text, "first")
+        history.add(.plainText("first"))
+        history.add(.plainText("second"))
+        XCTAssertEqual(history.items[0].textValue, "second")
+        XCTAssertEqual(history.items[1].textValue, "first")
     }
 
     func testAddMultipleItemsOrderedMostRecentFirst() {
-        history.add("a")
-        history.add("b")
-        history.add("c")
-        XCTAssertEqual(history.items.map(\.text), ["c", "b", "a"])
+        history.add(.plainText("a"))
+        history.add(.plainText("b"))
+        history.add(.plainText("c"))
+        XCTAssertEqual(history.items.map(\.textValue), ["c", "b", "a"])
     }
 
-    // MARK: - add() ignores empty/whitespace
+    // MARK: - add() ignores empty/whitespace (plainText only)
 
     func testAddEmptyStringIgnored() {
-        history.add("")
+        history.add(.plainText(""))
         XCTAssertTrue(history.items.isEmpty)
     }
 
     func testAddWhitespaceOnlyIgnored() {
-        history.add("   ")
+        history.add(.plainText("   "))
         XCTAssertTrue(history.items.isEmpty)
     }
 
     func testAddNewlineOnlyIgnored() {
-        history.add("\n\n")
+        history.add(.plainText("\n\n"))
         XCTAssertTrue(history.items.isEmpty)
     }
 
     func testAddTabOnlyIgnored() {
-        history.add("\t\t")
+        history.add(.plainText("\t\t"))
         XCTAssertTrue(history.items.isEmpty)
     }
 
     func testAddMixedWhitespaceIgnored() {
-        history.add(" \t\n ")
+        history.add(.plainText(" \t\n "))
         XCTAssertTrue(history.items.isEmpty)
     }
 
-    // MARK: - add() preserves original text
+    // MARK: - add() preserves original content
 
     func testAddPreservesOriginalTextWithWhitespace() {
-        history.add("  hello  ")
-        XCTAssertEqual(history.items.first?.text, "  hello  ")
+        history.add(.plainText("  hello  "))
+        XCTAssertEqual(history.items.first?.textValue, "  hello  ")
     }
 
-    // MARK: - Duplicate handling
+    // MARK: - Duplicate handling (plainText)
 
     func testAddDuplicateMovesToTop() {
-        history.add("first")
-        history.add("second")
-        history.add("first")
+        history.add(.plainText("first"))
+        history.add(.plainText("second"))
+        history.add(.plainText("first"))
         XCTAssertEqual(history.items.count, 2)
-        XCTAssertEqual(history.items[0].text, "first")
-        XCTAssertEqual(history.items[1].text, "second")
+        XCTAssertEqual(history.items[0].textValue, "first")
+        XCTAssertEqual(history.items[1].textValue, "second")
     }
 
     func testAddDuplicateDoesNotIncreaseCount() {
-        history.add("x")
-        history.add("y")
-        history.add("x")
+        history.add(.plainText("x"))
+        history.add(.plainText("y"))
+        history.add(.plainText("x"))
         XCTAssertEqual(history.items.count, 2)
     }
 
     func testDuplicateDetectionUsesExactText() {
-        // "hello" and "hello " are different
-        history.add("hello")
-        history.add("hello ")
+        history.add(.plainText("hello"))
+        history.add(.plainText("hello "))
         XCTAssertEqual(history.items.count, 2)
     }
 
     func testDuplicateDetectionIsCaseSensitive() {
-        history.add("Hello")
-        history.add("hello")
+        history.add(.plainText("Hello"))
+        history.add(.plainText("hello"))
         XCTAssertEqual(history.items.count, 2)
     }
 
     func testAddDuplicateUpdatesDate() {
-        history.add("text")
+        history.add(.plainText("text"))
         let firstDate = history.items.first!.copiedAt
 
-        // Small sleep to ensure different timestamp
         Thread.sleep(forTimeInterval: 0.01)
 
-        history.add("text")
+        history.add(.plainText("text"))
         let secondDate = history.items.first!.copiedAt
         XCTAssertGreaterThan(secondDate, firstDate)
+    }
+
+    // MARK: - Duplicate handling (multi-type)
+
+    func testDedupImages() {
+        let data = Data([1, 2, 3])
+        history.add(.image(tiffData: data, thumbnail: NSImage()))
+        history.add(.image(tiffData: data, thumbnail: NSImage()))
+        XCTAssertEqual(history.items.count, 1)
+    }
+
+    func testDedupRichText() {
+        let data = Data([4, 5, 6])
+        history.add(.richText(rtfData: data, plainFallback: "hello"))
+        history.add(.richText(rtfData: data, plainFallback: "hello"))
+        XCTAssertEqual(history.items.count, 1)
+    }
+
+    func testDedupFileURLs() {
+        let url = URL(fileURLWithPath: "/tmp/test.txt")
+        history.add(.fileURL([url]))
+        history.add(.fileURL([url]))
+        XCTAssertEqual(history.items.count, 1)
+    }
+
+    func testDedupWebURL() {
+        let url = URL(string: "https://example.com")!
+        history.add(.webURL(url))
+        history.add(.webURL(url))
+        XCTAssertEqual(history.items.count, 1)
+    }
+
+    func testNoCrossDedupPlainTextVsWebURL() {
+        history.add(.plainText("https://example.com"))
+        history.add(.webURL(URL(string: "https://example.com")!))
+        XCTAssertEqual(history.items.count, 2)
+    }
+
+    func testDifferentImageDataNotDeduped() {
+        history.add(.image(tiffData: Data([1, 2, 3]), thumbnail: NSImage()))
+        history.add(.image(tiffData: Data([4, 5, 6]), thumbnail: NSImage()))
+        XCTAssertEqual(history.items.count, 2)
     }
 
     // MARK: - Max items cap
 
     func testMaxItemsCappedAtTen() {
         for i in 1...15 {
-            history.add("item \(i)")
+            history.add(.plainText("item \(i)"))
         }
         XCTAssertEqual(history.items.count, 10)
     }
 
     func testMaxItemsRemovesOldest() {
         for i in 1...11 {
-            history.add("item \(i)")
+            history.add(.plainText("item \(i)"))
         }
         XCTAssertEqual(history.items.count, 10)
-        // Most recent is first
-        XCTAssertEqual(history.items.first?.text, "item 11")
-        // Oldest surviving is "item 2" (item 1 was pushed out)
-        XCTAssertEqual(history.items.last?.text, "item 2")
-        // "item 1" should be gone
-        XCTAssertNil(history.items.first(where: { $0.text == "item 1" }))
+        XCTAssertEqual(history.items.first?.textValue, "item 11")
+        XCTAssertEqual(history.items.last?.textValue, "item 2")
+        XCTAssertNil(history.items.first(where: { $0.textValue == "item 1" }))
     }
 
     func testExactlyTenItemsKeptAtCapacity() {
         for i in 1...10 {
-            history.add("item \(i)")
+            history.add(.plainText("item \(i)"))
         }
         XCTAssertEqual(history.items.count, 10)
-        XCTAssertEqual(history.items.first?.text, "item 10")
-        XCTAssertEqual(history.items.last?.text, "item 1")
+        XCTAssertEqual(history.items.first?.textValue, "item 10")
+        XCTAssertEqual(history.items.last?.textValue, "item 1")
     }
 
     // MARK: - item(at:)
 
     func testItemAtValidIndex() {
-        history.add("a")
-        history.add("b")
-        history.add("c")
-        XCTAssertEqual(history.item(at: 0)?.text, "c")
-        XCTAssertEqual(history.item(at: 1)?.text, "b")
-        XCTAssertEqual(history.item(at: 2)?.text, "a")
+        history.add(.plainText("a"))
+        history.add(.plainText("b"))
+        history.add(.plainText("c"))
+        XCTAssertEqual(history.item(at: 0)?.textValue, "c")
+        XCTAssertEqual(history.item(at: 1)?.textValue, "b")
+        XCTAssertEqual(history.item(at: 2)?.textValue, "a")
     }
 
     func testItemAtLastIndex() {
         for i in 1...10 {
-            history.add("item \(i)")
+            history.add(.plainText("item \(i)"))
         }
-        XCTAssertEqual(history.item(at: 9)?.text, "item 1")
+        XCTAssertEqual(history.item(at: 9)?.textValue, "item 1")
     }
 
     func testItemAtNegativeIndexReturnsNil() {
-        history.add("something")
+        history.add(.plainText("something"))
         XCTAssertNil(history.item(at: -1))
     }
 
     func testItemAtOutOfBoundsReturnsNil() {
-        history.add("only one")
+        history.add(.plainText("only one"))
         XCTAssertNil(history.item(at: 1))
         XCTAssertNil(history.item(at: 100))
     }
@@ -181,9 +226,9 @@ final class ClipboardHistoryTests: XCTestCase {
     // MARK: - clear()
 
     func testClearRemovesAllItems() {
-        history.add("a")
-        history.add("b")
-        history.add("c")
+        history.add(.plainText("a"))
+        history.add(.plainText("b"))
+        history.add(.plainText("c"))
         history.clear()
         XCTAssertTrue(history.items.isEmpty)
     }
@@ -194,11 +239,11 @@ final class ClipboardHistoryTests: XCTestCase {
     }
 
     func testClearThenAddWorks() {
-        history.add("before")
+        history.add(.plainText("before"))
         history.clear()
-        history.add("after")
+        history.add(.plainText("after"))
         XCTAssertEqual(history.items.count, 1)
-        XCTAssertEqual(history.items.first?.text, "after")
+        XCTAssertEqual(history.items.first?.textValue, "after")
     }
 
     // MARK: - Singleton
@@ -209,7 +254,7 @@ final class ClipboardHistoryTests: XCTestCase {
 
     func testSeparateInstancesAreIndependent() {
         let other = ClipboardHistory()
-        history.add("in history")
+        history.add(.plainText("in history"))
         XCTAssertTrue(other.items.isEmpty)
     }
 }

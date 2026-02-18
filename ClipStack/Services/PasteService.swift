@@ -6,20 +6,34 @@ enum PasteService {
     /// This is more reliable than a time-based flag.
     static var skipNextChangeCount: Int?
 
-    static func paste(_ text: String) {
+    static func paste(_ item: ClipboardItem) {
         let pasteboard = NSPasteboard.general
 
         // Store the change count that will occur after our write
         let currentCount = pasteboard.changeCount
         skipNextChangeCount = currentCount + 1
 
-        // Write the text to the system pasteboard
         pasteboard.clearContents()
-        pasteboard.setString(text, forType: .string)
+        writeContent(item.content, to: pasteboard)
 
         // Delay to allow the menu to close and the previous app to regain focus
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
             simulateCmdV()
+        }
+    }
+
+    private static func writeContent(_ content: ClipboardContent, to pasteboard: NSPasteboard) {
+        switch content {
+        case .plainText(let s):
+            pasteboard.setString(s, forType: .string)
+        case .webURL(let url):
+            pasteboard.setString(url.absoluteString, forType: .string)
+        case .fileURL(let urls):
+            pasteboard.writeObjects(urls as [NSURL])
+        case .richText(let data, _):
+            pasteboard.setData(data, forType: .rtf)
+        case .image(let data, _):
+            pasteboard.setData(data, forType: .tiff)
         }
     }
 

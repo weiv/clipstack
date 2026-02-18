@@ -1,4 +1,5 @@
 import SwiftUI
+import AppKit
 
 struct ClipboardMenuView: View {
     @ObservedObject var history = ClipboardHistory.shared
@@ -11,11 +12,10 @@ struct ClipboardMenuView: View {
         } else {
             ForEach(Array(history.items.enumerated()), id: \.element.id) { index, item in
                 Button(action: {
-                    PasteService.paste(item.text)
+                    PasteService.paste(item)
                 }) {
                     HStack {
-                        Text(item.displayText)
-                            .lineLimit(1)
+                        contentLabel(for: item.content)
                         Spacer()
                         let keyNumber = index < 9 ? index + 1 : 0
                         Text("\(preferences.hotKeyModifiers.displayName)\(keyNumber)")
@@ -45,5 +45,53 @@ struct ClipboardMenuView: View {
             NSApplication.shared.terminate(nil)
         }
         .keyboardShortcut("q")
+    }
+
+    @ViewBuilder
+    private func contentLabel(for content: ClipboardContent) -> some View {
+        switch content {
+        case .plainText(let s):
+            Label {
+                Text(s.trimmingCharacters(in: .whitespacesAndNewlines))
+                    .lineLimit(1)
+            } icon: {
+                Image(systemName: content.typeIcon)
+            }
+        case .richText(_, let fallback):
+            Label {
+                Text(fallback.trimmingCharacters(in: .whitespacesAndNewlines))
+                    .lineLimit(1)
+            } icon: {
+                Image(systemName: content.typeIcon)
+            }
+        case .webURL(let url):
+            Label {
+                Text(url.absoluteString)
+                    .lineLimit(1)
+                    .foregroundColor(.blue)
+            } icon: {
+                Image(systemName: content.typeIcon)
+                    .foregroundColor(.blue)
+            }
+        case .fileURL(let urls):
+            HStack {
+                if let first = urls.first {
+                    Image(nsImage: NSWorkspace.shared.icon(forFile: first.path))
+                        .resizable()
+                        .frame(width: 16, height: 16)
+                }
+                Text(urls.map { $0.lastPathComponent }.joined(separator: ", "))
+                    .lineLimit(1)
+            }
+        case .image(_, let thumbnail):
+            HStack {
+                Image(nsImage: thumbnail)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 16)
+                Text("Image")
+                    .foregroundColor(.secondary)
+            }
+        }
     }
 }

@@ -8,14 +8,16 @@ final class ClipboardHistory: ObservableObject {
 
     init() {}
 
-    func add(_ text: String) {
-        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return }
+    func add(_ content: ClipboardContent) {
+        // For plain text, reject empty/whitespace-only
+        if case .plainText(let s) = content {
+            guard !s.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+        }
 
         // Remove duplicate if exists (move to top)
-        items.removeAll { $0.text == text }
+        items.removeAll { $0.content == content }
 
-        let item = ClipboardItem(text: text, copiedAt: Date())
+        let item = ClipboardItem(content: content, copiedAt: Date())
         items.insert(item, at: 0)
 
         // Keep only the most recent items
