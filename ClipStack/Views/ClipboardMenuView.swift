@@ -38,6 +38,10 @@ struct ClipboardMenuView: View {
         }
         .disabled(updater?.canCheckForUpdates == false)
 
+        Button("About ClipStack") {
+            SettingsOpener.openAbout()
+        }
+
         Button("Preferences...") {
             SettingsOpener.openSettings()
         }

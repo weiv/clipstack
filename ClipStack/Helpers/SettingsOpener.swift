@@ -18,6 +18,14 @@ class PreferencesWindowController: NSWindowController, NSWindowDelegate {
     }
 }
 
+class AboutWindowDelegate: NSObject, NSWindowDelegate {
+    static let shared = AboutWindowDelegate()
+
+    func windowWillClose(_ notification: Notification) {
+        SettingsOpener.aboutWindow = nil
+    }
+}
+
 // Custom NSWindow to handle ESC key
 class PreferencesWindow: NSWindow {
     override func keyDown(with event: NSEvent) {
@@ -31,6 +39,31 @@ class PreferencesWindow: NSWindow {
 
 struct SettingsOpener {
     static var preferencesWindow: PreferencesWindowController?
+    static var aboutWindow: NSWindowController?
+
+    static func openAbout() {
+        NSApp.setActivationPolicy(.regular)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            NSApp.activate(ignoringOtherApps: true)
+
+            if let existing = aboutWindow {
+                existing.window?.makeKeyAndOrderFront(nil)
+                return
+            }
+
+            let hostingController = NSHostingController(rootView: AboutView())
+            hostingController.sizingOptions = [.preferredContentSize]
+            let window = PreferencesWindow(contentViewController: hostingController)
+            window.title = "About ClipStack"
+            window.styleMask.remove(.resizable)
+            let controller = NSWindowController(window: window)
+            controller.window?.delegate = AboutWindowDelegate.shared
+            aboutWindow = controller
+            controller.showWindow(nil)
+            window.makeKeyAndOrderFront(nil)
+        }
+    }
 
     static func openSettings() {
         NSApp.setActivationPolicy(.regular)
