@@ -145,12 +145,31 @@ Setup for real-world usage and distribution:
   - [x] Create GitHub release with notes
   - [x] Update Homebrew cask formula (version 0.1.2, new SHA256)
 
+### v0.1.6 Complete ✅
+
+- [x] Fix Sparkle "Check for Updates..." silently doing nothing
+  - Root cause: `NSApp.delegate as? AppDelegate` cast returned nil at SwiftUI view init time
+  - Fix: pass `SPUUpdater` explicitly from `ClipStackApp` via `appDelegate.updaterController.updater`
+- [x] Release v0.1.6 to GitHub (signed + notarized)
+- [x] Update Homebrew cask (version 0.1.6)
+- [x] appcast.xml updated with v0.1.6 entry
+
+### v0.1.5 Complete ✅
+
+- [x] About window (app version, author, weivco.com link)
+- [x] Paste confirmation HUD (floating "Pasted ✓" panel, fades after 0.75s)
+  - Fixed layout recursion crash: use fixed frame instead of sizingOptions = [.preferredContentSize]
+- [x] Memory profiling: 0 leaks, ~24MB steady-state footprint
+- [x] Release v0.1.5 to GitHub (signed + notarized)
+- [x] Update Homebrew cask (version 0.1.5)
+
 ### v0.1.4 Complete ✅
 
-- [x] Sparkle auto-update support
-- [x] Release v0.1.4 to GitHub (signed + notarized)
+- [x] Sparkle auto-update support (SPM 2.8.1, Ed25519 keys, appcast.xml)
+- [x] Code signing with Developer ID Application: Vladimir Weinstein (43Q637G4QG)
+- [x] Hardened Runtime + notarization + stapling
+- [x] Release v0.1.4 to GitHub
 - [x] Update Homebrew cask (version 0.1.4)
-- [x] appcast.xml updated with v0.1.4 entry
 
 ### v0.1.3 Complete ✅
 
@@ -181,7 +200,4 @@ Setup for real-world usage and distribution:
   - appcast.xml hosted at github.com/weiv/clipstack/main/appcast.xml
   - "Check for Updates..." in menu; auto-checks on launch
 
-- [ ] Memory usage profiling for long-running sessions
-  - Monitor memory growth over time with Instruments
-  - Consider weak references if keeping large text items
-  - Profile with Instruments (Allocations tool)
+- [x] Memory usage profiling: 0 leaks, ~24MB steady-state (done in v0.1.5)
