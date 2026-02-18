@@ -257,4 +257,102 @@ final class ClipboardHistoryTests: XCTestCase {
         history.add(.plainText("in history"))
         XCTAssertTrue(other.items.isEmpty)
     }
+
+    // MARK: - Persistence
+
+    private func tempStorageURL() -> URL {
+        FileManager.default.temporaryDirectory
+            .appendingPathComponent("ClipStackTest-\(UUID().uuidString).json")
+    }
+
+    func testItemsPersistedAndRestoredOnNewInstance() {
+        let url = tempStorageURL()
+        defer { try? FileManager.default.removeItem(at: url) }
+
+        let h1 = ClipboardHistory(storageURL: url)
+        h1.add(.plainText("persisted item"))
+        h1.add(.webURL(URL(string: "https://example.com")!))
+
+        let h2 = ClipboardHistory(storageURL: url)
+        XCTAssertEqual(h2.items.count, 2)
+        XCTAssertEqual(h2.items[0].textValue, nil) // webURL
+        XCTAssertEqual(h2.items[1].textValue, "persisted item")
+    }
+
+    func testClearDeletesPersistedItems() {
+        let url = tempStorageURL()
+        defer { try? FileManager.default.removeItem(at: url) }
+
+        let h1 = ClipboardHistory(storageURL: url)
+        h1.add(.plainText("to be cleared"))
+
+        let h2 = ClipboardHistory(storageURL: url)
+        h2.clear()
+
+        let h3 = ClipboardHistory(storageURL: url)
+        XCTAssertTrue(h3.items.isEmpty)
+    }
+
+    func testImagesNotPersisted() {
+        let url = tempStorageURL()
+        defer { try? FileManager.default.removeItem(at: url) }
+
+        let h1 = ClipboardHistory(storageURL: url)
+        h1.add(.image(tiffData: Data([1, 2, 3]), thumbnail: NSImage()))
+        h1.add(.plainText("text alongside image"))
+
+        let h2 = ClipboardHistory(storageURL: url)
+        // Image not persisted, only plain text survives
+        XCTAssertEqual(h2.items.count, 1)
+        XCTAssertEqual(h2.items[0].textValue, "text alongside image")
+    }
+
+    func testItemOrderPreservedAfterReload() {
+        let url = tempStorageURL()
+        defer { try? FileManager.default.removeItem(at: url) }
+
+        let h1 = ClipboardHistory(storageURL: url)
+        h1.add(.plainText("first"))
+        h1.add(.plainText("second"))
+        h1.add(.plainText("third"))
+
+        let h2 = ClipboardHistory(storageURL: url)
+        XCTAssertEqual(h2.items.map(\.textValue), ["third", "second", "first"])
+    }
+
+    func testMaxItemsEnforcedOnLoad() {
+        let url = tempStorageURL()
+        defer { try? FileManager.default.removeItem(at: url) }
+
+        let h1 = ClipboardHistory(maxItems: 10, storageURL: url)
+        for i in 1...8 { h1.add(.plainText("item \(i)")) }
+
+        // Load with smaller cap
+        let h2 = ClipboardHistory(maxItems: 3, storageURL: url)
+        XCTAssertEqual(h2.items.count, 3)
+        XCTAssertEqual(h2.items[0].textValue, "item 8")
+    }
+
+    func testMissingFileLoadsEmptyHistory() {
+        let url = tempStorageURL() // file does not exist yet
+        let h = ClipboardHistory(storageURL: url)
+        XCTAssertTrue(h.items.isEmpty)
+    }
+
+    func testRichTextPersistedAndRestored() {
+        let url = tempStorageURL()
+        defer { try? FileManager.default.removeItem(at: url) }
+
+        let rtfData = Data("fake-rtf".utf8)
+        let h1 = ClipboardHistory(storageURL: url)
+        h1.add(.richText(rtfData: rtfData, plainFallback: "rich text"))
+
+        let h2 = ClipboardHistory(storageURL: url)
+        guard case .richText(let data, let fallback) = h2.items.first?.content else {
+            XCTFail("Expected richText")
+            return
+        }
+        XCTAssertEqual(data, rtfData)
+        XCTAssertEqual(fallback, "rich text")
+    }
 }

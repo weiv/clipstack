@@ -23,9 +23,11 @@ All P0 items complete as of Feb 12, 2026. These fixes ensure the app behaves cor
 
 Essential features for a usable clipboard manager:
 
-- [ ] Persist clipboard history to disk (survive app restarts)
-  - Currently stored only in memory; lost on app restart
-  - Consider JSON or SQLite format in ~/Library/Application Support/ClipStack/
+- [x] Persist clipboard history to disk (survive app restarts)
+  - JSON in ~/Library/Application Support/ClipStack/history.json
+  - ClipboardContent + ClipboardItem are Codable; images excluded (too large)
+  - ClipboardHistory.shared uses real storage URL; test instances use nil (no I/O)
+  - 95 tests passing
 - [x] Settings window infrastructure
   - [x] Launch at Login toggle (with ServiceManagement)
   - [x] Keyboard shortcut modifier selection (Command+Option, Command+Shift, Control+Option, etc.)
