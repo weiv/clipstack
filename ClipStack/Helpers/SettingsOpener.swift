@@ -4,6 +4,7 @@ import SwiftUI
 class PreferencesWindowController: NSWindowController, NSWindowDelegate {
     convenience init() {
         let hostingController = NSHostingController(rootView: PreferencesView())
+        hostingController.sizingOptions = [.preferredContentSize]
         let window = PreferencesWindow(contentViewController: hostingController)
         window.title = "Preferences"
         window.setFrameAutosaveName("PreferencesWindow")

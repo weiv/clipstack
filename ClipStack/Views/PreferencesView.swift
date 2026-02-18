@@ -46,7 +46,7 @@ struct PreferencesView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 400, height: 400)
+        .frame(width: 400)
         .padding()
     }
 }
