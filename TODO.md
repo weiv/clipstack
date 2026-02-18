@@ -157,11 +157,10 @@ Setup for real-world usage and distribution:
 
 ### Next Steps
 
-- [ ] Code signing with Developer ID (required for production distribution)
-  - Obtain Apple Developer ID certificate
-  - Sign Release build: `codesign --deep --force --verify --verbose --sign "Developer ID Application" ClipStack.app`
-  - Notarize with Apple: `xcrun notarytool submit ClipStack.dmg --apple-id user@example.com`
-  - This ensures no "unidentified developer" warning on first launch
+- [x] Code signing with Developer ID
+  - Developer ID Application certificate: Vladimir Weinstein (43Q637G4QG)
+  - Hardened Runtime enabled, apple-events entitlement
+  - Notarized and stapled; no "unidentified developer" warning
 
 - [ ] Submit to Homebrew Core (optional, increases discoverability)
   - Fork https://github.com/Homebrew/homebrew-casks
