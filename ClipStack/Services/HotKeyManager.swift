@@ -10,7 +10,8 @@ final class HotKeyManager {
         self.history = history
     }
 
-    func register(modifiers: NSEvent.ModifierFlags = [.command, .option]) {
+    func register(modifiers: NSEvent.ModifierFlags = [.command, .option],
+                  plainTextModifiers: NSEvent.ModifierFlags = [.command, .option, .shift]) {
         unregister()  // Clear existing first
 
         // Map 1 through 0 to history indices 0-9
@@ -37,11 +38,22 @@ final class HotKeyManager {
                 }
             }
             hotKeys.append(hk)
+
+            let plainHk = HotKey(key: key, modifiers: plainTextModifiers)
+            plainHk.keyDownHandler = { [weak self] in
+                guard let self else { return }
+                if let item = self.history.item(at: index) {
+                    PasteService.pastePlain(item)
+                }
+            }
+            hotKeys.append(plainHk)
         }
     }
 
     func updateModifiers(_ modifiers: NSEvent.ModifierFlags) {
-        register(modifiers: modifiers)
+        let prefs = PreferencesManager.shared
+        register(modifiers: modifiers,
+                 plainTextModifiers: prefs.hotKeyModifiers.plainTextModifierFlags)
     }
 
     func unregister() {

@@ -23,6 +23,19 @@ enum PasteService {
         }
     }
 
+    static func pastePlain(_ item: ClipboardItem) {
+        guard let text = item.content.plainText else { return }
+        let pasteboard = NSPasteboard.general
+        let currentCount = pasteboard.changeCount
+        skipNextChangeCount = currentCount + 1
+        pasteboard.clearContents()
+        pasteboard.setString(text, forType: .string)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            simulateCmdV()
+            PasteHUD.shared.show()
+        }
+    }
+
     private static func writeContent(_ content: ClipboardContent, to pasteboard: NSPasteboard) {
         switch content {
         case .plainText(let s):

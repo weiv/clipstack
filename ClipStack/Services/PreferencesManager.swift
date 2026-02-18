@@ -50,6 +50,15 @@ enum HotKeyModifierCombo: String, CaseIterable, Identifiable {
         case .commandControl: return [.command, .control]
         }
     }
+
+    /// Modifier for "paste as plain text": primary modifier + Shift, or + Option if Shift already present.
+    var plainTextModifierFlags: NSEvent.ModifierFlags {
+        modifierFlags.contains(.shift) ? modifierFlags.union(.option) : modifierFlags.union(.shift)
+    }
+
+    var plainTextDisplayName: String {
+        displayName.contains("⇧") ? displayName + "⌥" : displayName + "⇧"
+    }
 }
 
 final class PreferencesManager: ObservableObject {

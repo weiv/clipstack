@@ -24,7 +24,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         clipboardMonitor?.start()
 
         hotKeyManager = HotKeyManager()
-        hotKeyManager?.register(modifiers: prefs.hotKeyModifiers.modifierFlags)
+        hotKeyManager?.register(modifiers: prefs.hotKeyModifiers.modifierFlags,
+                                plainTextModifiers: prefs.hotKeyModifiers.plainTextModifierFlags)
 
         // Listen for preference changes
         let nc = NotificationCenter.default

@@ -19,7 +19,7 @@ struct ClipboardMenuView: View {
                 }) {
                     contentLabel(for: item.content, timestamp: relativeTime(item.copiedAt))
                 }
-                .help(tooltipText(for: item.content))
+                .help(tooltipText(for: item.content, index: index))
                 .keyboardShortcut(KeyEquivalent(key), modifiers: preferences.hotKeyModifiers.eventModifiers)
             }
         }
@@ -69,13 +69,25 @@ struct ClipboardMenuView: View {
         }
     }
 
-    private func tooltipText(for content: ClipboardContent) -> String {
+    private var plainTextModifierDisplay: String {
+        preferences.hotKeyModifiers.plainTextDisplayName
+    }
+
+    private func tooltipText(for content: ClipboardContent, index: Int) -> String {
+        let key = index < 9 ? "\(index + 1)" : "0"
         switch content {
-        case .plainText(let s):          return s
-        case .webURL(let url):           return url.absoluteString
-        case .fileURL(let urls):         return urls.map(\.path).joined(separator: "\n")
-        case .richText(_, let fallback): return fallback
-        case .image:                     return "Image"
+        case .plainText(let s):
+            return s
+        case .webURL(let url):
+            return url.absoluteString
+        case .fileURL(let urls):
+            return urls.map(\.path).joined(separator: "\n")
+                + "\n\n\(plainTextModifierDisplay)\(key) → paste as plain text"
+        case .richText(_, let fallback):
+            return fallback
+                + "\n\n\(plainTextModifierDisplay)\(key) → paste as plain text"
+        case .image:
+            return "Image"
         }
     }
 

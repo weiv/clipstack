@@ -30,6 +30,17 @@ enum ClipboardContent: Equatable, Codable {
         }
     }
 
+    /// Plain text representation for "paste as plain text". Nil for images.
+    var plainText: String? {
+        switch self {
+        case .plainText(let s):          return s
+        case .webURL(let url):           return url.absoluteString
+        case .fileURL(let urls):         return urls.map(\.path).joined(separator: "\n")
+        case .richText(_, let fallback): return fallback
+        case .image:                     return nil
+        }
+    }
+
     var typeIcon: String {
         switch self {
         case .plainText: return "doc.text"
