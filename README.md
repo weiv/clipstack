@@ -1,18 +1,21 @@
 # ClipStack
 
-A lightweight macOS menu bar clipboard manager. Keeps your last 10 copied text items and lets you paste them with a click or keyboard shortcut.
-This is an experiment in LLM assisted coding - I was missing the extended clipboard from ChromeOS, and this problem seemed like a good example to try to develop using Claude Code, Gemini CLI, Amp and such. Feel free to add features.
+A lightweight macOS menu bar clipboard manager. Keeps your recent copied items and lets you paste them with a click or keyboard shortcut.
+
+This is an experiment in LLM-assisted coding — I was missing the extended clipboard from ChromeOS and this problem seemed like a good fit to build with Claude Code. Feel free to add features.
 
 ## Features
 
 - Lives in the menu bar — no Dock icon, no windows
-- Automatically captures text copied to the clipboard
-- Stores the 10 most recent items (duplicates move to top)
-- Paste any item by clicking it in the menu
-- Global keyboard shortcuts to paste items 1–10 (customizable modifier keys: ⌘⌥, ⌘⇧, ⌃⌥, ⌃⇧, ⌘⌃)
+- Captures text, URLs, images, files, and rich text
+- Stores up to 50 recent items (configurable), duplicates move to top
+- Paste any item by clicking or via keyboard shortcut (⌘⌥1–0 by default)
+- Customizable modifier keys (⌘⌥, ⌘⇧, ⌃⌥, ⌃⇧, ⌘⌃)
+- Timestamps and full-content tooltips on each item
+- Paste confirmation HUD
+- Configurable history size and polling interval
 - Launch at Login toggle
-- Clear History option
-- Preferences window with keyboard shortcut modifier selection
+- Auto-updates via Sparkle
 
 ## Requirements
 
@@ -21,69 +24,68 @@ This is an experiment in LLM assisted coding - I was missing the extended clipbo
 
 ## Installation
 
-### Homebrew (Recommended)
+### DMG (Recommended)
+
+Download the latest `ClipStack.dmg` from the [Releases page](https://github.com/weiv/clipstack/releases/latest), open it, and drag ClipStack to Applications.
+
+ClipStack will notify you of updates automatically via Sparkle — no need to reinstall manually.
+
+### Homebrew
 
 ```bash
 brew tap weiv/clipstack
 brew install clipstack
 ```
 
-Then launch ClipStack from Applications or use Spotlight (⌘Space).
+> Note: Homebrew installs don't receive Sparkle auto-updates. Run `brew upgrade clipstack` to update manually.
 
 ### From Source
-
-Clone the repository and build:
 
 ```bash
 git clone https://github.com/weiv/clipstack.git
 cd clipstack
-xcodebuild -project MacClip.xcodeproj -scheme ClipStack -configuration Release build
-open "$(xcodebuild -project MacClip.xcodeproj -scheme ClipStack -showBuildSettings 2>/dev/null | grep ' BUILT_PRODUCTS_DIR' | awk '{print $3}')/ClipStack.app"
+xcodebuild -project ClipStack.xcodeproj -scheme ClipStack -configuration Release build
+open "$(xcodebuild -project ClipStack.xcodeproj -scheme ClipStack -showBuildSettings 2>/dev/null | grep ' BUILT_PRODUCTS_DIR' | awk '{print $3}')/ClipStack.app"
 ```
 
 ## Build & Run (Development)
 
 ```bash
 # Build
-xcodebuild -project MacClip.xcodeproj -scheme ClipStack -configuration Debug build
+xcodebuild -project ClipStack.xcodeproj -scheme ClipStack -configuration Debug build
 
 # Run
-open "$(xcodebuild -project MacClip.xcodeproj -scheme ClipStack -showBuildSettings 2>/dev/null | grep ' BUILT_PRODUCTS_DIR' | awk '{print $3}')/ClipStack.app"
+open "$(xcodebuild -project ClipStack.xcodeproj -scheme ClipStack -showBuildSettings 2>/dev/null | grep ' BUILT_PRODUCTS_DIR' | awk '{print $3}')/ClipStack.app"
+
+# Test
+xcodebuild test -project ClipStack.xcodeproj -scheme ClipStack -destination 'platform=macOS'
 ```
-
-## Testing
-
-```bash
-xcodebuild test -project MacClip.xcodeproj -scheme ClipStack -destination 'platform=macOS'
-```
-
-44 unit tests cover the model layer:
-
-- **ClipboardItemTests** (17 tests) — display text truncation, whitespace trimming, equality, identity
-- **ClipboardHistoryTests** (27 tests) — add/dedup/cap behavior, index access, clear, edge cases
 
 ## Architecture
 
 ```
 ClipStack/
-├── ClipStackApp.swift           # @main, MenuBarExtra scene, AppDelegate adaptor
-├── AppDelegate.swift          # Init services, permission check
+├── ClipStackApp.swift             # @main, MenuBarExtra scene, AppDelegate adaptor
+├── AppDelegate.swift              # Init services, Sparkle updater controller
 ├── Models/
-│   ├── ClipboardItem.swift    # Identifiable struct (id, text, copiedAt, displayText)
-│   └── ClipboardHistory.swift # ObservableObject singleton, @Published items
+│   ├── ClipboardContent.swift     # Enum: plainText, webURL, fileURL, richText, image
+│   ├── ClipboardItem.swift        # Identifiable + Codable struct
+│   └── ClipboardHistory.swift     # ObservableObject singleton, disk persistence
 ├── Services/
-│   ├── ClipboardMonitor.swift # Timer polling, changeCount tracking
-│   ├── PasteService.swift     # Pasteboard write + CGEvent Cmd+V simulation
-│   ├── HotKeyManager.swift    # 10 HotKey instances for Command+Option+1-0
-│   └── PermissionService.swift# AXIsProcessTrustedWithOptions check/prompt
-└── Views/
-    └── ClipboardMenuView.swift# Menu items, Clear History, Launch at Login, Quit
-
-ClipStackTests/
-├── ClipboardItemTests.swift
-└── ClipboardHistoryTests.swift
+│   ├── ClipboardMonitor.swift     # Timer polling, changeCount tracking
+│   ├── PasteService.swift         # Pasteboard write + CGEvent Cmd+V simulation
+│   ├── HotKeyManager.swift        # 10 HotKey instances, dynamic modifier support
+│   ├── PermissionService.swift    # Accessibility permission check/prompt
+│   └── PreferencesManager.swift   # @AppStorage, hotkey modifiers, launch at login
+├── Views/
+│   ├── ClipboardMenuView.swift    # Menu items with icons, timestamps, tooltips
+│   ├── PreferencesView.swift      # Settings form
+│   └── AboutView.swift            # Version, author, weivco.com
+└── Helpers/
+    ├── SettingsOpener.swift        # Window controller for preferences + about
+    └── PasteHUD.swift             # Floating "Pasted ✓" confirmation panel
 ```
 
 ## How It Works
 
-ClipStack polls the system clipboard every 0.5 seconds. When you click an item or use a shortcut, it writes the text to the clipboard and simulates **⌘V** via `CGEvent` to paste into the active app.
+ClipStack polls the system clipboard every 0.5 seconds (configurable). When you click an item or use a shortcut, it writes the original pasteboard data back (preserving formatting, file references, and images) and simulates **⌘V** via `CGEvent` to paste into the active app.
