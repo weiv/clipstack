@@ -145,6 +145,16 @@ Setup for real-world usage and distribution:
   - [x] Create GitHub release with notes
   - [x] Update Homebrew cask formula (version 0.1.2, new SHA256)
 
+### v0.1.3 Complete ✅
+
+- [x] Timestamps on menu items (relative time, Text+Text concatenation)
+- [x] Persist history to disk (JSON, images excluded)
+- [x] Hover tooltips (.help() modifier)
+- [x] Item truncation (45 chars in menu)
+- [x] Configurable history size + polling interval UI
+- [x] Release v0.1.3 to GitHub
+- [x] Update Homebrew cask formula (version 0.1.3, new SHA256)
+
 ### Next Steps
 
 - [ ] Code signing with Developer ID (required for production distribution)
