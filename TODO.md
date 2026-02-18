@@ -43,22 +43,23 @@ Essential features for a usable clipboard manager:
   - Add text field at top of menu
   - Filter items in real-time as user types
 
-## P2 - Clipboard type support
+## P2 - Clipboard type support ✅
 
 Extend beyond text-only clipboard management:
 
-- [ ] Handle pasteboard types beyond `.string` (URLs, file paths)
-  - Check for NSPasteboard.PasteboardType.URL
-  - Check for NSPasteboard.PasteboardType.fileURL
-  - Store type info in ClipboardItem for display purposes
-- [ ] Support images and file paths, not just text
-  - Add image thumbnail preview in menu
-  - Show file paths with icon
-  - Requires different storage (images too large for memory)
-- [ ] Rich text support (preserve formatting)
-  - Detect NSPasteboard.PasteboardType.rtf or .html
-  - Store formatted text; paste back in original format
-  - Challenge: displaying RTF in menu (plain text only?)
+- [x] Handle pasteboard types beyond `.string` (URLs, file paths)
+  - ClipboardContent enum: plainText, webURL, fileURL, richText, image
+  - Detection priority: image → fileURL → RTF → string (web URL or plain)
+- [x] Support images and file paths, not just text
+  - Image thumbnail preview in menu (max 18pt height, 80pt width)
+  - File paths show real Finder icon + filename
+  - Full-fidelity paste: TIFF/RTF/fileURL written back to pasteboard natively
+- [x] Rich text support (preserve formatting)
+  - Detects .rtf pasteboard type; stores RTF data + plain fallback
+  - Pastes back original RTF data (preserves formatting in target app)
+- [x] Web URL detection
+  - http/https strings with valid host classified as .webURL
+  - Displayed in blue with link icon
 - [ ] Reduce polling interval or use NSPasteboard observation if available
   - Current: 0.5s polling is inefficient
   - NSPasteboard doesn't have change notifications

@@ -33,7 +33,7 @@ final class HotKeyManager {
             hk.keyDownHandler = { [weak self] in
                 guard let self else { return }
                 if let item = self.history.item(at: index) {
-                    PasteService.paste(item.text)
+                    PasteService.paste(item)
                 }
             }
             hotKeys.append(hk)
